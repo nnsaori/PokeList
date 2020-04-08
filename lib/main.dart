@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokes/http_service.dart';
-import 'package:pokes/monster_ball_page.dart';
+import 'package:pokes/tab_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,12 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MonsterBallPage(),
-        // home: MyHomePage(title: 'Flutter Demo Home Page'),
+      // title: 'Flutter Demo',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      // ),
+      home: TabPage(),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -43,8 +42,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final HttpService httpService = HttpService();
   int _counter = 0;
-
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,14 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        // onPressed: _incrementCounter,
-        onPressed: () {
-          httpService.aaa();
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.delete),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
