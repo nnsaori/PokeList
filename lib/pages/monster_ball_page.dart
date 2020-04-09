@@ -2,25 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:pokes/http_service.dart';
 import 'package:pokes/pokemon_model.dart';
 
-class MonsterBallPage extends StatelessWidget {
-  final HttpService httpService = HttpService();
+class MonsterBallPage extends StatefulWidget {
+
   @override
-  Widget build(BuildContext context) {    
-  var nextButton = IconButton(
-                icon: Icon(
-                    Icons.refresh,
-                      color: Colors.pink,
-                      size: 50,
-                    ),
-                onPressed: () {
-                  httpService.fetchPokemon();
-                }
-              );
+  _MonsterBallState createState() => _MonsterBallState();
+}
+
+class _MonsterBallState extends State<MonsterBallPage> {
+
+  final HttpService httpService = HttpService();
+  Future<Pokemon> poke;
+
+  @override
+  Widget build(BuildContext context) {   
+    poke = httpService.fetchPokemon(); 
+    var nextButton = IconButton(
+                  icon: Icon(
+                      Icons.refresh,
+                        color: Colors.pink,
+                        size: 50,
+                      ),
+                  onPressed: () {
+                    setState(() {
+                      poke = httpService.fetchPokemon();  
+                    });
+                  }
+                );
 
     return Scaffold(
       body: Center(
         child: FutureBuilder(
-          future: httpService.fetchPokemon(),
+          future: poke,
           builder: (BuildContext context, AsyncSnapshot<Pokemon> snapshot) { 
             if (snapshot.hasData) {
               Pokemon pokemon = snapshot.data;
@@ -32,7 +44,7 @@ class MonsterBallPage extends StatelessWidget {
                       size: 50,
                   ), 
                   onPressed: () {
-                    print(pokemon.name);
+                    print("tapped favorite!!");
                   }
               );
               return Center(

@@ -24,7 +24,7 @@ class _FavoriteListState extends State<FavoliteList> {
             child: ListTile(
               onTap: () {},
               title: Text(favorites[index].name),
-              )
+            )
           );
         }
       )
