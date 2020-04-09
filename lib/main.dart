@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokes/http_service.dart';
-import 'package:pokes/tab_page.dart';
+import 'package:pokes/pages/tab_page.dart';
 
 void main() {
   runApp(MyApp());
