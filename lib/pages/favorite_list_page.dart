@@ -1,33 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:pokes/pokemon_model.dart';
+import 'package:pokes/shared_pref.dart';
 
-class FavoliteList extends StatefulWidget {
-
+class Favorite extends StatefulWidget {
   @override
-  _FavoriteListState createState() => _FavoriteListState();
+  FavoritePage createState() {
+    return FavoritePage();
+  }
 }
 
-class _FavoriteListState extends State<FavoliteList> {
-  List<Pokemon> favorites = [
-    Pokemon(id: 1, name: "f"),
-    Pokemon(id: 2, name: "h"),
-    Pokemon(id: 3, name: "r"),
-  ];
+class FavoritePage extends State<Favorite> {
+  SharedPref sharedPref = SharedPref();
+  List<Pokemon> favoriteList = [];
+
+_loadSharedPrefs() {
+  List<String> jsonList = sharedPref.getStringList("demoList");
+  favoriteList = jsonList.map((json) => Pokemon.fromJson(json)).toList();
+}
+  // _loadSharedPrefs() async {
+  //   try {
+  //     Pokemon user = Pokemon.fromJson(await sharedPref.read("fav"));
+  //     setState(() {
+  //       favoriteList = user;
+  //     });
+  //   } catch (e) {
+  //     print("eeeeeeeee");
+  //     print(e);
+  //     Scaffold.of(context).showSnackBar(SnackBar(
+  //         content: new Text("Nothing found!"),
+  //         duration: const Duration(milliseconds: 500)));
+  //   }
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSharedPrefs();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: favorites.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              onTap: () {},
-              title: Text(favorites[index].name),
-            )
-          );
-        }
-      )
+      body: RefreshIndicator(
+        child: ListView.builder(
+          itemCount: favoriteList.length,
+          itemBuilder: (context, i) => ListTile(
+            title: Text(favoriteList[i].name)
+          ),
+        ), onRefresh: () async {},
+      ),
     );
   }
 }

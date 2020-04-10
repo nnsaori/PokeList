@@ -12,18 +12,22 @@ class HttpService {
     var url = '/pokemon-species/$randomId/';
 
     http.Response response = await http.get(baseURL + url);
+    print("aaaaaaa ($response.statusCode)");
     print(response.statusCode);
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
-      var itemCount = jsonResponse['count'];
-      print('Number of books about http: $itemCount.');
+      // print(jsonResponse);
+      // var itemCount = jsonResponse['count'];
+      // print('Number of books about http: $itemCount.');
 
-      Pokemon pokemon = Pokemon.fromJson(jsonResponse);
+      Pokemon pokemon = Pokemon.fromJ(jsonResponse);
+      print("poke name");
       print(pokemon.name);
       return pokemon;
    
     } else {
       print('Error! Request failed with status: ${response.statusCode}.');
+      return Pokemon();
     }
   }
 }

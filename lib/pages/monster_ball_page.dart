@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:pokes/http_service.dart';
 import 'package:pokes/pokemon_model.dart';
+import 'package:pokes/shared_pref.dart';
 
 class MonsterBallPage extends StatefulWidget {
 
@@ -11,11 +14,23 @@ class MonsterBallPage extends StatefulWidget {
 class _MonsterBallState extends State<MonsterBallPage> {
 
   final HttpService httpService = HttpService();
+  SharedPref sharedPref = SharedPref();
+  String sharedKey = "fav";
   Future<Pokemon> poke;
 
   @override
+  void initState() {
+      super.initState();
+
+print("start");
+    poke = httpService.fetchPokemon();
+print(poke.toString());
+
+  }
+
+  @override
   Widget build(BuildContext context) {   
-    poke = httpService.fetchPokemon(); 
+    poke = httpService.fetchPokemon();
     var nextButton = IconButton(
                   icon: Icon(
                       Icons.refresh,
@@ -25,6 +40,7 @@ class _MonsterBallState extends State<MonsterBallPage> {
                   onPressed: () {
                     setState(() {
                       poke = httpService.fetchPokemon();  
+                      // sharedPref.remove("fav");
                     });
                   }
                 );
@@ -44,14 +60,22 @@ class _MonsterBallState extends State<MonsterBallPage> {
                       size: 50,
                   ), 
                   onPressed: () {
-                    print("tapped favorite!!");
+                    List<Pokemon> favList = [];
+                    List<String> favjsonList = sharedPref.getStringList("demoList");
+                    favList = favjsonList.map((json) => Pokemon.fromJson(json)).toList();
+
+                    favList.add(pokemon);
+                    List<String> jsonList = favList.map((pokemon) => pokemon.toJson()).toList();
+
+                    sharedPref.setStringList("demoList", jsonList);
+
                   }
               );
               return Center(
                 child: Column(children: <Widget>[
                   Image.network('https://pokeres.bastionbot.org/images/pokemon/$idString.png', height: 200,),
                   Text(pokemon.name),
-                  Text(pokemon.id.toString()),
+                  // Text(pokemon.id.toString()),
                   favoriteButton,
                   nextButton,
                 ],

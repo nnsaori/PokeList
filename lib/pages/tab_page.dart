@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pokes/pages/monster_ball_page.dart';
-
 import 'favorite_list_page.dart';
 
 class TabPage extends StatelessWidget {
@@ -18,7 +17,7 @@ class TabPage extends StatelessWidget {
       ),
       body: TabBarView(children: [
         MonsterBallPage(),
-        FavoliteList(),
+        Favorite(),
       ])  
     ),
     );
